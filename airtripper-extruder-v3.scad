@@ -1,6 +1,6 @@
 // Airtripper's Bowden 3D Printer Extruder Revision 3 bsp
 // by Airtripper May 2012
-// Copyright © 2012 - 2013 Airtripper
+// Copyright ï¿½ 2012 - 2013 Airtripper
 // airtripper.com
 // It is licensed under the Creative Commons - GNU GPL license. 
 // Last edit: 05/09/2013
@@ -269,7 +269,7 @@ module extruder_block() {
 
 
 module bsp_push_fit() {
-	bsp = 10;
+	bsp = 7;
 	x_nuj = 0;
 	
 	difference() {
@@ -286,9 +286,10 @@ module bsp_push_fit() {
 			}
 		}
 		translate([8+x_nuj,7,15]) rotate([0,90,0]) cylinder(8, r=(bsp/2), $fn=100);
+		translate([11.5,7,15])rotate([0, 270, 0]) nutTrap(13, 10);
 		translate([-1,7,15]) rotate([0,90,0]) cylinder(19, r=1.15, $fn=30);
 		translate([11.2+x_nuj,7,-1]) rotate([0,0,0]) cylinder(15, r=1.75, $fn=50);	// M3 Screw hole
-		translate([11.2+x_nuj,7,7]) rotate([0,0,30]) cylinder(5, r=3.5, $fn=6);	// M3 Screw hex nut hole
+		//translate([11.2+x_nuj,7,7]) rotate([0,0,30]) cylinder(5, r=3.5, $fn=6);	// M3 Screw hex nut hole
 		translate([11.2+x_nuj,5.3,-1]) cube([6,3.4,15]);
 		translate([11.2+x_nuj,7,-1]) rotate([0,0,0]) cylinder(2, r=3.5, $fn=50);
 		translate([11.2+x_nuj,7,0.99]) rotate([0,0,0]) cylinder(3, r1=3.5, r2=1.75, $fn=50);
@@ -417,4 +418,21 @@ module tube_bracket() {
 		}
 }
 
+module nutTrap(size, offset, tolerance = +0.0001) {
+    radius = size/2+tolerance;
+	height = 5.5+tolerance;
+    apothem = radius*sin(60);
 
+    translate([0, 0, -height/2])
+    {
+        hull()
+        {
+            translate([offset, -apothem, 0])
+            {
+        		cube([0.1, 2*apothem, height]);
+        	}
+
+            cylinder(r=radius, h=height, $fn = 6);
+        }
+    }
+}
